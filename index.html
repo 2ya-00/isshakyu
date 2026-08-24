@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>一心でトス</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+</head>
+
+<body>
+  <div id="game">
+    <!-- 상단 HUD -->
+    <header id="hud">
+      <div class="hud-item">
+        <span class="hud-label">점수</span>
+        <span id="score" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">콤보</span>
+        <span id="combo" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">시간</span>
+        <span id="time" class="hud-value">60</span>
+      </div>
+    </header>
+
+    <!-- 컨베이어-->
+    <div id="belt-wrap">
+      <img id="center-figure" src="assets/img/default.png" alt="" />
+      <div id="belt"></div>
+    </div>
+
+    <!-- 조작 안내 -->
+    <footer id="controls">
+      <div class="ctrl"><b>▲</b> 배구부</div>
+      <div class="ctrl"><b>◀ ▶</b> 연타로 닦기</div>
+      <div class="ctrl"><b>[Space]</b> 연타로 바람넣기</div>
+      <div class="ctrl"><b>▼</b> 다른부</div>
+    </footer>
+
+    <!-- 화면 아래: 카트 이미지 -->
+    <div id="cart-area">
+      <img id="cart-img" src="assets/img/cart.png" alt="" />
+    </div>
+  </div>
+
+  <!-- 스페셜볼 첫 클리어 안내 (세션당 1회, 게임 잠시 정지) -->
+  <div id="special-overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 class="overlay-heading">네가 왜 여깄냐...?</h2>
+      <p>그 역시 배구부 소유이니 ▲로 보내줍시다.<br />
+        <b>점수 2배 + 시간 충전</b>
+      </p>
+      <button id="special-close-btn">계속하기</button>
+    </div>
+  </div>
+
+  <!-- 시작 / 게임오버 오버레이 (메인 화면) -->
+  <div id="overlay" class="overlay">
+    <div class="overlay-box">
+      <h1 id="overlay-title">一心でトス!</h1>
+      <p id="overlay-desc">잇슌을 도와 공을 분류합시다</p>
+
+      <!-- 점수판 -->
+      <div id="final-score">0</div>
+      <div id="final-stats">
+        <div class="stat"><span class="stat-label">성공</span><span id="stat-success" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">실패</span><span id="stat-fail" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">콤보</span><span id="stat-combo" class="stat-value">0</span></div>
+      </div>
+      <div class="description">점수판을 캡쳐해서 안내트윗에 멘션해주세요. (점수갱신은 수정)</div>
+
+      <div class="overlay-buttons">
+        <button id="start-btn">게임 시작</button>
+        <button id="help-btn" class="btn-secondary">설명</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 설명 팝업 -->
+  <div id="help-overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 class="overlay-heading">게임 설명</h2>
+      <ul id="overlay-rules">
+        <li>
+          <span class="rule-ex ex-volleyball"></span>
+          <span><b>배구공</b> ▲ 로 탄자쿠 잇슌에게</span>
+        </li>
+        <li>
+          <span class="rule-ex ex-volleyball"><span class="ball-overlay dirt-level-2"></span></span>
+          <span><b>오염</b> ◀ ▶ 연타로 닦기</span>
+        </li>
+        <li>
+          <span class="rule-ex ex-volleyball ex-deflated"></span>
+          <span><b>바람빠짐</b> [Space] 연타로 바람을 채우기</span>
+        </li>
+        <li>
+          <span class="rule-ex-spacer"></span>
+          <span><b>그 외</b> ▼ 로 바구니에</span>
+        </li>
+      </ul>
+      <button id="help-close-btn">닫기</button>
+    </div>
+  </div>
+
+  <!-- BGM: 배경 음악 -->
+  <audio id="bgm" src="assets/audio/슈의라면집.mp3" loop preload="auto"></audio>
+
+  <!-- BGM 컨트롤: 항상 화면에 고정 표시 -->
+  <div id="bgm-control">
+    <button id="bgm-toggle" type="button" aria-label="음악 재생 / 멈춤">▶</button>
+    <input id="bgm-volume" type="range" min="0" max="100" value="50" aria-label="음량 조절" />
+  </div>
+
+  <script src="assets/js/game.js?v=21"></script>
+</body>
+
+</html>

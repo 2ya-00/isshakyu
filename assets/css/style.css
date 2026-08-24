@@ -1,0 +1,792 @@
+/* ===== 폰트 ===== */
+/* 기본 본문 폰트 */
+@font-face {
+  font-family: 'YuhanKimberlyPureunsoop';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607101517@font-2/font-2/font-2-300.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+/* 타이틀 폰트 (로컬: assets/font) */
+@font-face {
+  font-family: 'VITRO CORE';
+  src: url('../font/VITRO CORE TTF.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SunghyunSansJP';
+  src: url('../font/SunghyunSansJP-ExtraBold.otf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* 체육관 배경(bg.png)에 맞춘 따뜻한 팔레트 */
+  --bg: #23160a;
+  /* 배경 이미지 뒤 폴백(따뜻한 다크) */
+  --panel: rgba(34, 20, 8, 0.72);
+  /* 반투명 목재톤 패널 (배경이 비침) */
+  --line: rgba(255, 210, 110, 0.40);
+  /* 골드 테두리 */
+  --text: #fdf6ea;
+  /* 따뜻한 화이트 */
+  --muted: #e2cda6;
+  /* 따뜻한 뮤트 */
+  --accent: #ffce3a;
+  /* 골드(목재 바닥과 어울림) */
+  --good: #57d47e;
+  --bad: #ff6b5e;
+  /* 무대 커튼 레드 톤 */
+  --belt: rgba(58, 38, 14, 0.78);
+  /* 따뜻한 벨트 */
+  /* 폰트 */
+  --font-base: 'YuhanKimberlyPureunsoop', "Malgun Gothic", system-ui, sans-serif;
+  --font-title: 'SunghyunSansJP', 'VITRO CORE', 'YuhanKimberlyPureunsoop', "Malgun Gothic", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  color: var(--text);
+  font-family: var(--font-base);
+  user-select: none;
+}
+
+body {
+  /* 체육관 배경 이미지 (뒤에 폴백 색) */
+  background: var(--bg) url("../img/bg.png") center center / cover no-repeat fixed;
+}
+
+#game {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+/* ===== HUD ===== */
+#hud {
+  display: flex;
+  justify-content: space-around;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.hud-value {
+  font-family: var(--font-title);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#time.warn {
+  color: var(--bad);
+}
+
+.flash-bad {
+  animation: flashBad 0.3s;
+}
+
+.flash-good {
+  animation: flashGood 0.3s;
+}
+
+@keyframes flashBad {
+  0% {
+    color: var(--bad);
+    transform: scale(1.3);
+  }
+
+  100% {}
+}
+
+@keyframes flashGood {
+  0% {
+    color: var(--good);
+    transform: scale(1.3);
+  }
+
+  100% {}
+}
+
+/* ===== 화면 아래 카트 ===== */
+/* 카트 이미지의 윗부분만 보이고 아래쪽은 잘리도록: 컨테이너보다 큰 이미지를
+ * 위쪽에 정렬(align-items: flex-end 아님)하고 overflow: hidden 으로 아래를 자름. */
+#cart-area {
+  flex: 0 0 auto;
+  height: 70px;
+  /* 실제로 보이는 높이 */
+  overflow: hidden;
+  /* 넘치는 아래쪽을 잘라냄 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  /* 이미지 위쪽을 컨테이너 위에 붙임 → 윗부분만 노출 */
+}
+
+#cart-img {
+  height: auto;
+  width: 80%;
+  max-width: 440px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pop {
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== 컨베이어 ===== */
+#belt-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  /* 성공/실패 피드백(벨트 바깥 위) 기준 */
+}
+
+#belt {
+  display: flex;
+  align-items: flex-end;
+  /* 공이 벨트 위에 얹혀 위로 솟도록 */
+  gap: 14px;
+  background: repeating-linear-gradient(90deg, var(--belt) 0 24px, rgba(28, 18, 6, 0.78) 24px 48px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  padding-left: calc(50% - 95px);
+  /* 활성 공(190) 절반만큼 왼쪽 패딩 → 가로 가운데 */
+  height: 84px;
+  /* 얇은 벨트(고정) — 공이 위로 넘치게 */
+  overflow-x: clip;
+  /* 가로(대기열)는 자르고 */
+  overflow-y: visible;
+  /* 세로로 공이 벨트 위로 삐져나오게 */
+  position: relative;
+  z-index: 1;
+  /* 중앙 캐릭터(z-index:0)보다 위 → 공/컨베이어가 앞에 오도록 */
+}
+
+/* 중앙 캐릭터: 컨베이어/공보다 뒤(z-index 낮음)에서 가운데 서 있음.
+ * 벨트 높이(84px)만큼 위로 올려 벨트 위에 서 있는 형태.
+ * 성공/실패 시 이 이미지가 good/bad 로 잠깐 바뀜(같은 위치·크기). */
+#center-figure {
+  position: absolute;
+  left: 30%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  height: 88%;
+  max-height: 340px;
+  width: auto;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 성공/실패 반응: 잠깐 통통 튀는 연출 */
+#center-figure.react {
+  animation: figureReact 0.5s ease;
+}
+
+@keyframes figureReact {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+
+  30% {
+    transform: translateX(-50%) scale(1.08);
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+#active-marker {
+  margin: 8px auto 0;
+  /* 가운데 정렬된 활성 공 아래로 */
+  font-size: 13px;
+  color: var(--accent);
+  width: 190px;
+  text-align: center;
+}
+
+/* ===== 공 ===== */
+.ball {
+  width: 96px;
+  min-width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #1b1b1b;
+  font-weight: 700;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .4);
+  isolation: isolate;
+  /* 얼룩 오버레이(blend)를 공 내부로만 합성 */
+  animation: enter 0.35s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease,
+    width 0.2s ease, height 0.2s ease, min-width 0.2s ease;
+}
+
+@keyframes enter {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* 활성(선택된) 공: 가운데에서 크게, 위로 올려 연출이 안 가리게.
+ * 하드 테두리(outline) 대신 블러 처리된 부드러운 테두리로 강조. */
+.ball.active {
+  z-index: 3;
+  width: 190px;
+  min-width: 190px;
+  height: 190px;
+}
+
+/* 활성 공의 블러 테두리: 공보다 살짝 큰 골드 링을 blur 로 흐리게 → 은은한 강조 */
+.ball.active::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 6px solid var(--accent);
+  filter: blur(6px);
+  opacity: .85;
+  pointer-events: none;
+  z-index: -1;
+  /* 공 뒤로 → 가장자리에 부드럽게 번지도록 */
+}
+
+.ball.leaving {
+  transform: translateY(-40px) scale(.6);
+  opacity: 0;
+}
+
+.ball.leaving-down {
+  transform: translateY(40px) scale(.6);
+  opacity: 0;
+}
+
+/* 오답 커밋: 누른 방향으로 빙글 돌며 빠져나감 (재시도 없음) */
+.ball.fail-up {
+  transform: translateY(-70px) rotate(-25deg) scale(.5);
+  opacity: 0;
+  filter: grayscale(.6);
+}
+
+.ball.fail-down {
+  transform: translateY(70px) rotate(25deg) scale(.5);
+  opacity: 0;
+  filter: grayscale(.6);
+}
+
+/* 닦기 연출: ←→ 누를 때 수건이 그 방향으로 스윽 지나감 */
+.towel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130px;
+  height: 120px;
+  background: url("../img/towel.png") center/contain no-repeat;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+}
+
+.towel.swipe-left {
+  animation: towelLeft 0.3s ease-out;
+}
+
+.towel.swipe-right {
+  animation: towelRight 0.3s ease-out;
+}
+
+/* 오른쪽: 15° 기울여 오른쪽 위 대각선으로 */
+@keyframes towelRight {
+  0% {
+    opacity: 0;
+    transform: translate(-80%, -43%) rotate(15deg);
+  }
+
+  25% {
+    opacity: .95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-30%, -57%) rotate(15deg);
+  }
+}
+
+/* 왼쪽: 좌우 대칭 (-15°, 왼쪽 위 대각선) */
+@keyframes towelLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-30%, -43%) rotate(-15deg);
+  }
+
+  25% {
+    opacity: .95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-80%, -57%) rotate(-15deg);
+  }
+}
+
+/* 바람넣기 연출: Space 누를 때 공 왼쪽에 펌프 이미지가 잠깐 보임
+ * (scaleX(-1) 로 좌우 반전 → 펌프 호스가 공을 향함) */
+.pump {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  margin-right: 2px;
+  width: 140px;
+  height: 140px;
+  background: url("../img/pump.png") center/contain no-repeat;
+  transform: translateY(-50%) scaleX(1);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 6;
+}
+
+.pump.show {
+  animation: pumpShow 0.3s ease-out;
+}
+
+@keyframes pumpShow {
+  0% {
+    opacity: 0;
+    transform: translate(8px, -50%) scaleX(1);
+  }
+
+  35% {
+    opacity: 1;
+    transform: translate(0, -50%) scaleX(1);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, -50%) scaleX(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, -50%) scaleX(1);
+  }
+}
+
+/* 바람빠짐 시각효과: 납작하게 찌그러짐 */
+.ball.deflated:not(.filled) {
+  transform: scaleY(0.55);
+  transform-origin: 50% 100%;
+  /* 바닥 기준으로 찌그러져 벨트 위에 얹히게(중앙 정렬 X) */
+}
+
+/* 농도 오버레이 레이어
+ * 농도(1~3단계)별로 p1/p2/p3 이미지를 공 위에 얹어 오염을 표현합니다.
+ * mix-blend-mode: multiply → 얼룩(어두운 부분)만 공을 어둡게 만들고
+ * 밝은 부분은 공이 그대로 비쳐, 닦는 동안에도 공 종류가 바뀌지 않고 유지됩니다. */
+.ball-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  mix-blend-mode: multiply;
+  transition: opacity 0.15s ease;
+}
+
+/* 오퍼시티: p3(가장 더러움) = 1(그대로), 단계가 낮아질수록(p1 쪽) 더 투명하게 */
+.dirt-level-1 {
+  background-image: url("../img/p1.png");
+  opacity: 0.5;
+}
+
+.dirt-level-2 {
+  background-image: url("../img/p2.png");
+  opacity: 0.75;
+}
+
+.dirt-level-3 {
+  background-image: url("../img/p3.png");
+  opacity: 1;
+  mix-blend-mode: normal;
+  /* 가장 더러움: 곱하기 대신 불투명하게 덮어 공이 안 비치게 */
+}
+
+.dirt-clean {
+  opacity: 0;
+}
+
+/* 스페셜 공: 금빛 강조 + 반짝임 */
+.ball.special {
+  box-shadow:
+    inset -8px -8px 16px rgba(0, 0, 0, .25),
+    0 0 0 4px #ffcf33,
+    0 0 18px 4px rgba(255, 207, 51, .75);
+  animation: enter 0.35s ease, specialGlow 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes specialGlow {
+  from {
+    box-shadow: inset -8px -8px 16px rgba(0, 0, 0, .25), 0 0 0 4px #ffcf33, 0 0 12px 2px rgba(255, 207, 51, .5);
+  }
+
+  to {
+    box-shadow: inset -8px -8px 16px rgba(0, 0, 0, .25), 0 0 0 4px #fff3b0, 0 0 26px 8px rgba(255, 207, 51, .95);
+  }
+}
+
+/* 진행 게이지 (닦기 / 바람넣기) */
+.ball-gauge {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 8px;
+  background: rgba(0, 0, 0, .4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ball-gauge-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.08s linear;
+}
+
+.ball.ready .ball-gauge-fill {
+  background: var(--good);
+}
+
+/* ===== 조작 안내 ===== */
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.ctrl {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ctrl b {
+  color: var(--text);
+}
+
+/* ===== 오버레이 ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 12, 4, .82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-box {
+  background: #2b1a0a;
+  /* 모달은 불투명 목재톤 */
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  max-width: 420px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+
+.overlay-box h1 {
+  font-family: var(--font-title);
+  font-size: 36px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.overlay-box p {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* ===== 게임 종료 점수판 (오버레이가 .gameover 일 때만) ===== */
+#final-score,
+#final-stats {
+  display: none;
+}
+
+/* 게임오버 모드에서는 설명 문구 숨기고 큰 점수 + 통계 표시 */
+#overlay.gameover #overlay-desc {
+  display: none;
+}
+
+#overlay.gameover #final-score {
+  display: block;
+  font-family: 'VITRO CORE', var(--font-title);
+  font-size: 76px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin: 4px 0 12px;
+}
+
+#overlay.gameover #final-stats {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin: 0 0 22px;
+}
+
+/* 안내 문구: 게임 종료 시에만 표시 */
+.overlay-box .description {
+  display: none;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+#overlay.gameover .description {
+  display: block;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.description {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.overlay-heading {
+  font-family: var(--font-title);
+  font-size: 26px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+#overlay-rules {
+  list-style: none;
+  text-align: left;
+  margin: 0 auto 20px;
+  display: inline-block;
+}
+
+#overlay-rules li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+#overlay-rules b {
+  color: var(--accent);
+}
+
+/* 설명용 미니 공 예시 (배구공 / 오염 / 바람빠짐) */
+.rule-ex {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
+  isolation: isolate;
+  /* 얼룩 오버레이(blend)를 예시 공 내부로만 합성 */
+}
+
+/* 이미지 없는 행(그 외)의 정렬용 빈 자리 */
+.rule-ex-spacer {
+  flex: 0 0 auto;
+  width: 42px;
+}
+
+.ex-volleyball {
+  background-image: url("../img/volleyball_white.png");
+}
+
+/* 바람빠짐: 납작하게 찌그러진 형태 */
+.ex-deflated {
+  transform: scaleY(0.6);
+}
+
+/* 메인 화면 버튼 묶음 */
+.overlay-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* 공통 버튼 */
+.overlay-box button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.overlay-box button:hover {
+  filter: brightness(1.05);
+}
+
+/* 주 버튼(시작/닫기/계속): 노란색 */
+#start-btn,
+#help-close-btn,
+#special-close-btn {
+  background: var(--accent);
+  color: #1b1b1b;
+}
+
+/* 안내 문구 강조 */
+.overlay-box p b {
+  color: var(--accent);
+}
+
+/* 보조 버튼(설명): 외곽선 */
+.overlay-box .btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+/* ===== BGM 컨트롤 (메인/게임 공통, 항상 고정 표시) ===== */
+#bgm-control {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 30;
+  /* 오버레이(z-index:10)보다 위 → 메인/게임 모두에서 조작 가능 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+  backdrop-filter: blur(3px);
+}
+
+/* 재생/멈춤 버튼 */
+#bgm-toggle {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #1b1b1b;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bgm-toggle:hover {
+  filter: brightness(1.06);
+}
+
+/* 음량 슬라이더 */
+#bgm-volume {
+  width: 96px;
+  height: 4px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
