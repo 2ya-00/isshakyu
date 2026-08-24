@@ -51,7 +51,7 @@ const BALL_TYPES = {
     label: "바람빠짐",
     commit: ACTION.BASKET,
     process: FILL.INFLATE,
-    reps: 10,
+    reps: 1,     // Space 한 번에 바람 완충(연타 아님)
     weight: 3,
   },
   wrong: {
