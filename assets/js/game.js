@@ -613,3 +613,30 @@ window.addEventListener("pointerdown", tryAutostartBgm);
 window.addEventListener("keydown", tryAutostartBgm);
 
 syncBgmIcon();
+
+/* ===== 모바일 터치 조작 패널 =====
+ * 방향키/스페이스와 동일한 동작(handleAction)을 터치 버튼에 연결합니다.
+ * pointerdown 으로 처리해 탭 반응을 즉각적으로(click 300ms 지연 없이) 만들고,
+ * 연타(◀▶ 번갈아 닦기)도 매 탭마다 발동되도록 합니다. */
+const touchPanel = document.getElementById("touch-panel");
+if (touchPanel) {
+  touchPanel.addEventListener("pointerdown", (e) => {
+    const btn = e.target.closest(".tbtn");
+    if (!btn) return;
+    e.preventDefault(); // 더블탭 확대·텍스트 선택·스크롤 방지
+
+    const action = btn.dataset.action;
+    if (action === "fill") {
+      handleAction("fill", btn.dataset.dir);
+    } else {
+      handleAction(action);
+    }
+
+    // 눌림 피드백: 짧게 반짝인 뒤 원상태로
+    btn.classList.add("pressed");
+    setTimeout(() => btn.classList.remove("pressed"), 110);
+  });
+
+  // 길게 누르기 컨텍스트 메뉴 방지
+  touchPanel.addEventListener("contextmenu", (e) => e.preventDefault());
+}

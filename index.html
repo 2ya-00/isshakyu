@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>一心でトス</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=22" />
+  <link rel="stylesheet" href="assets/css/style.css?v=24" />
 </head>
 
 <body>
@@ -48,6 +48,33 @@
     <!-- 화면 아래: 카트 이미지 -->
     <div id="cart-area">
       <img id="cart-img" src="assets/img/cart.png" alt="" />
+    </div>
+  </div>
+
+  <!-- 모바일 터치 조작 패널 (반응형: 터치 기기에서만 표시) -->
+  <div id="touch-panel" role="group" aria-label="화면 조작 패널">
+    <!-- 십자형 조작 패드: 위 ▲배구부 / 중앙 ◀ 공기주입 ▶ / 아래 ▼다른부 -->
+    <div id="dpad">
+      <button class="tbtn tbtn-up" data-action="up" type="button" aria-label="배구부로 보내기">
+        <span class="tbtn-arrow" aria-hidden="true">▲</span>
+        <span class="tbtn-label">배구부</span>
+      </button>
+      <button class="tbtn tbtn-left" data-action="fill" data-dir="left" type="button" aria-label="왼쪽으로 닦기">
+        <span class="tbtn-arrow" aria-hidden="true">◀</span>
+        <span class="tbtn-label">닦기</span>
+      </button>
+      <button id="pump-btn" class="tbtn" data-action="inflate" type="button" aria-label="공기 주입">
+        <span class="pump-icon" aria-hidden="true"></span>
+        <span class="tbtn-label">공기주입</span>
+      </button>
+      <button class="tbtn tbtn-right" data-action="fill" data-dir="right" type="button" aria-label="오른쪽으로 닦기">
+        <span class="tbtn-arrow" aria-hidden="true">▶</span>
+        <span class="tbtn-label">닦기</span>
+      </button>
+      <button class="tbtn tbtn-down" data-action="down" type="button" aria-label="다른부 바구니로 보내기">
+        <span class="tbtn-arrow" aria-hidden="true">▼</span>
+        <span class="tbtn-label">다른부</span>
+      </button>
     </div>
   </div>
 
@@ -119,7 +146,7 @@
     <input id="bgm-volume" type="range" min="0" max="100" value="50" aria-label="음량 조절" />
   </div>
 
-  <script src="assets/js/game.js?v=23"></script>
+  <script src="assets/js/game.js?v=24"></script>
 </body>
 
 </html>
