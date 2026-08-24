@@ -490,7 +490,7 @@ function startGame() {
 
 function endGame() {
   state.running = false;
-  el.overlayTitle.textContent = "おつかれさまッ스!";
+  el.overlayTitle.textContent = "おつかれさまッス!";
   el.finalScore.textContent = String(state.score);
   el.statSuccess.textContent = String(state.success);
   el.statFail.textContent = String(state.fail);
