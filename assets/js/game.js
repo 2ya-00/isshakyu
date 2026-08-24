@@ -115,6 +115,8 @@ const el = {
   helpOverlay: document.getElementById("help-overlay"),
   helpCloseBtn: document.getElementById("help-close-btn"),
   centerFigure: document.getElementById("center-figure"),
+  comboBig: document.getElementById("combo-big"),
+  comboBigNum: document.getElementById("combo-big-num"),
   finalScore: document.getElementById("final-score"),
   statSuccess: document.getElementById("stat-success"),
   statFail: document.getElementById("stat-fail"),
@@ -308,6 +310,7 @@ function succeed(ball, gained, into) {
   flash(el.score, "flash-good");
   showFeedback("success");
   updateHUD();
+  if (state.combo >= 2) bump(el.comboBigNum); // 콤보 숫자 통통 튀는 연출
 }
 
 function fail(ball, direction, feedbackType) {
@@ -417,6 +420,9 @@ function updateHUD() {
   el.combo.textContent = String(state.combo);
   el.time.textContent = String(Math.ceil(state.timeLeft));
   el.time.classList.toggle("warn", state.timeLeft <= 10);
+  // 캐릭터 라인 오른쪽 큰 콤보 숫자 (2 이상일 때만 표시)
+  el.comboBigNum.textContent = String(state.combo);
+  el.comboBig.classList.toggle("show", state.combo >= 2);
 }
 
 function bump(node) {

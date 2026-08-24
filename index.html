@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>一心でトス</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="stylesheet" href="assets/css/style.css?v=22" />
 </head>
 
 <body>
@@ -16,7 +16,7 @@
         <span class="hud-label">점수</span>
         <span id="score" class="hud-value">0</span>
       </div>
-      <div class="hud-item">
+      <div class="hud-item" style="display: none;">
         <span class="hud-label">콤보</span>
         <span id="combo" class="hud-value">0</span>
       </div>
@@ -29,6 +29,11 @@
     <!-- 컨베이어-->
     <div id="belt-wrap">
       <img id="center-figure" src="assets/img/default.png" alt="" />
+      <!-- 콤보 큰 숫자: 캐릭터 라인 오른쪽 -->
+      <div id="combo-big">
+        <span id="combo-big-num">0</span>
+        <span id="combo-big-label">COMBO</span>
+      </div>
       <div id="belt"></div>
     </div>
 
@@ -114,7 +119,7 @@
     <input id="bgm-volume" type="range" min="0" max="100" value="50" aria-label="음량 조절" />
   </div>
 
-  <script src="assets/js/game.js?v=21"></script>
+  <script src="assets/js/game.js?v=22"></script>
 </body>
 
 </html>
