@@ -65,8 +65,8 @@ const BALL_TYPES = {
 const CONFIG = {
   gameTime: 50,
   maxBelt: 5,
-  spawnEvery: 700,
-  minSpawn: 300,
+  spawnEvery: 400,
+  minSpawn: 100,
   score: { basket: 10, remove: 8 },
   progressScore: { clean: 1, inflate: 3 },
   penalty: { score: 5, time: 1 },
