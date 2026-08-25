@@ -478,7 +478,19 @@ body {
 .ball.deflated:not(.filled) {
   transform: scaleY(0.55);
   transform-origin: 50% 100%;
-  /* 바닥 기준으로 찌그러져 벨트 위에 얹히게(중앙 정렬 X) */
+  animation-name: enter-deflated;
+}
+
+@keyframes enter-deflated {
+  from {
+    transform: translateX(40px) scaleY(0.55);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleY(0.55);
+    opacity: 1;
+  }
 }
 
 /* 농도 오버레이 레이어
