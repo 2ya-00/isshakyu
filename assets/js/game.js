@@ -63,7 +63,7 @@ const BALL_TYPES = {
 };
 
 const CONFIG = {
-  gameTime: 45,
+  gameTime: 50,
   maxBelt: 5,
   spawnEvery: 700,
   minSpawn: 300,
