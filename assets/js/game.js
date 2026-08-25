@@ -74,7 +74,7 @@ const CONFIG = {
 
   variants: {
     special: {
-      chance: 0.02,
+      chance: 0.01,
       scoreMultiplier: 2,
       timeBonus: 10,
     },
