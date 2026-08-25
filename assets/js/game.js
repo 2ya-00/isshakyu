@@ -68,6 +68,7 @@ const CONFIG = {
   spawnEvery: 700,
   minSpawn: 300,
   score: { basket: 10, remove: 8 },
+  progressScore: { clean: 1, inflate: 3 },
   penalty: { score: 5, time: 1 },
   comboBonus: 2,
 
@@ -407,7 +408,9 @@ function showPump(ball) {
 
 function addProgress(ball) {
   ball.progress += 1;
-  state.score += 1;
+  state.score += ball.process === FILL.INFLATE
+    ? CONFIG.progressScore.inflate
+    : CONFIG.progressScore.clean;
   const ratio = Math.min(1, ball.progress / ball.totalNeeded);
   if (ball.gaugeEl) ball.gaugeEl.style.width = ratio * 100 + "%";
   if (ball.overlayEl) updateDirtVisual(ball);
@@ -420,7 +423,6 @@ function updateHUD() {
   el.combo.textContent = String(state.combo);
   el.time.textContent = String(Math.ceil(state.timeLeft));
   el.time.classList.toggle("warn", state.timeLeft <= 10);
-  // 캐릭터 라인 오른쪽 큰 콤보 숫자 (2 이상일 때만 표시)
   el.comboBigNum.textContent = String(state.combo);
   el.comboBig.classList.toggle("show", state.combo >= 2);
 }
@@ -614,16 +616,13 @@ window.addEventListener("keydown", tryAutostartBgm);
 
 syncBgmIcon();
 
-/* ===== 모바일 터치 조작 패널 =====
- * 방향키/스페이스와 동일한 동작(handleAction)을 터치 버튼에 연결합니다.
- * pointerdown 으로 처리해 탭 반응을 즉각적으로(click 300ms 지연 없이) 만들고,
- * 연타(◀▶ 번갈아 닦기)도 매 탭마다 발동되도록 합니다. */
+/* ===== 모바일 터치 조작 패널 =====*/
 const touchPanel = document.getElementById("touch-panel");
 if (touchPanel) {
   touchPanel.addEventListener("pointerdown", (e) => {
     const btn = e.target.closest(".tbtn");
     if (!btn) return;
-    e.preventDefault(); // 더블탭 확대·텍스트 선택·스크롤 방지
+    e.preventDefault();
 
     const action = btn.dataset.action;
     if (action === "fill") {
@@ -632,11 +631,9 @@ if (touchPanel) {
       handleAction(action);
     }
 
-    // 눌림 피드백: 짧게 반짝인 뒤 원상태로
     btn.classList.add("pressed");
     setTimeout(() => btn.classList.remove("pressed"), 110);
   });
 
-  // 길게 누르기 컨텍스트 메뉴 방지
   touchPanel.addEventListener("contextmenu", (e) => e.preventDefault());
 }
